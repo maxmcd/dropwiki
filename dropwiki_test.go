@@ -11,7 +11,7 @@ func TestRenderIndexForEmptyFolder(t *testing.T) {
 
 	actual := RenderIndex(f)
 
-	expected := "<li><h1>foo</h1></li>\n"
+	expected := "<ul>\n<li><h1>foo</h1></li>\n</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
 }
@@ -47,13 +47,15 @@ func TestRenderIndex(t *testing.T) {
 
 	actual := RenderIndex(f)
 
-	expected := "<li><h1>root</h1></li>\n"
+	expected := "<ul>\n"
+	expected += "<li><h1>root</h1></li>\n"
 	expected += "<li>root_file.org</li>\n"
 	expected += "<li><h2>level1</h2></li>\n"
 	expected += "<li>level1_file.md</li>\n"
 	expected += "<li><h3>level2</h3></li>\n"
 	expected += "<li>level2_file.md</li>\n"
 	expected += "<li>level2_other_file.md</li>\n"
+	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
 }

@@ -49,7 +49,7 @@ func (f Folder) renderIndex(startingDepth int) string {
 }
 
 func RenderIndex(start Node) string {
-	return start.renderIndex(1)
+	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
 }
 
 func main() {
