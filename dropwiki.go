@@ -10,24 +10,7 @@ type Title string
 type Node interface {
 	Value() string
 	Children() []Node
-	RenderTitle(int) string // is there no other way to do this?
-}
-
-type Folder struct {
-	Name     string
-	Contents []Node
-}
-
-func (f Folder) Value() string {
-	return f.Name
-}
-
-func (f Folder) Children() []Node {
-	return f.Contents
-}
-
-func (f Folder) RenderTitle(depth int) string {
-	return fmt.Sprintf("<li><h%d>%s</h%d></li>\n", depth, f.Name, depth)
+	renderIndex(int) string
 }
 
 type Page struct {
@@ -43,23 +26,35 @@ func (p Page) Children() []Node {
 	return []Node{}
 }
 
-func (p Page) RenderTitle(_ int) string {
+func (p Page) renderIndex(d int) string {
 	return fmt.Sprintf("<li>%s</li>\n", p.Title)
 }
 
-func RenderIndex(start Node) string {
+type Folder struct {
+	Name     string
+	Contents []Node
+}
 
-	var renderIndex func(int, Node) string
-	renderIndex = func(depth int, n Node) string {
+func (f Folder) Value() string {
+	return f.Name
+}
 
-		renderedChildren := ""
-		for _, c := range n.Children() {
-			renderedChildren += renderIndex(depth+1, c)
-		}
+func (f Folder) Children() []Node {
+	return f.Contents
+}
 
-		return n.RenderTitle(depth) + renderedChildren
+func (f Folder) renderIndex(startingDepth int) string {
+	renderedChildren := ""
+	for _, c := range f.Children() {
+		renderedChildren += c.renderIndex(startingDepth + 1)
 	}
-	return renderIndex(1, start)
+
+	renderedTitle := fmt.Sprintf("<li><h%d>%s</h%d></li>\n", startingDepth, f.Name, startingDepth)
+	return renderedTitle + renderedChildren
+}
+
+func RenderIndex(start Node) string {
+	return start.renderIndex(1)
 }
 
 func main() {
