@@ -10,7 +10,7 @@ import (
 type NodeSortingWeight int
 
 const (
-	PageSortingWeight NodeSortingWeight = iota
+	PageSortingWeight NodeSortingWeight = iota // Pages come before Folders
 	FolderSortingWeight
 )
 
@@ -43,6 +43,7 @@ func (p Page) Value() string {
 }
 
 func (p Page) Children() []Node {
+	// a Page has no Children
 	return []Node{}
 }
 
