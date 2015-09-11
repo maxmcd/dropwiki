@@ -1,4 +1,4 @@
-package main
+package index
 
 import "fmt"
 
@@ -50,8 +50,4 @@ func (f Folder) renderIndex(startingDepth int) string {
 
 func RenderIndex(start Node) string {
 	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
-}
-
-func main() {
-	fmt.Println("hello?")
 }
