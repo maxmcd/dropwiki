@@ -20,24 +20,16 @@ func TestRenderIndex(t *testing.T) {
 	f := Folder{
 		Name: "root",
 		Contents: []Node{
-			Page{
-				Title: "root_file.org",
-			},
+			Page{Title: "root_file.org"},
 			Folder{
 				Name: "level1",
 				Contents: []Node{
-					Page{
-						Title: "level1_file.md",
-					},
+					Page{Title: "level1_file.md"},
 					Folder{
 						Name: "level2",
 						Contents: []Node{
-							Page{
-								Title: "level2_file.md",
-							},
-							Page{
-								Title: "level2_other_file.md",
-							},
+							Page{Title: "level2_file.md"},
+							Page{Title: "level2_other_file.md"},
 						},
 					},
 				},
