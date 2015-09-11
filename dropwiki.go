@@ -2,11 +2,6 @@ package main
 
 import "fmt"
 
-type Markdown string
-type HTML string
-type Path string
-type Title string
-
 type Node interface {
 	Value() string
 	Children() []Node
