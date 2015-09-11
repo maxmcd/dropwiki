@@ -51,3 +51,23 @@ func TestRenderIndex(t *testing.T) {
 
 	assert.Equal(t, expected, actual, "should be the same")
 }
+
+func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
+	f := Folder{
+		Name: "foo",
+		Contents: []Node{
+			Folder{Name: "folder"},
+			Page{Title: "page"},
+		},
+	}
+
+	actual := RenderIndex(f)
+
+	expected := "<ul>\n"
+	expected += "<li><h1>foo</h1></li>\n"
+	expected += "<li>page</li>\n"
+	expected += "<li><h2>folder</h2></li>\n"
+	expected += "</ul>"
+
+	assert.Equal(t, expected, actual, "should be the same")
+}
