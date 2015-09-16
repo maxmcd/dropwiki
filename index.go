@@ -2,6 +2,8 @@ package index
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"sort"
 )
 
@@ -80,4 +82,46 @@ func (f Directory) renderIndex(startingDepth int) string {
 
 func RenderIndex(start Node) string {
 	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
+}
+
+// recursively make a Node from a path
+func NewNodeFrom(startPath string) (Node, error) {
+	name := filepath.Base(startPath)
+
+	info, err := os.Lstat(startPath)
+	if err != nil {
+		return nil, err
+	}
+	if !info.IsDir() {
+		// TODO: name needs to be properly formatted/capitalized
+		return Page{Name: name}, nil
+	}
+
+	contentsNames, _ := readDirNames(startPath)
+	contents := []Node{}
+	for _, name := range contentsNames {
+		path := filepath.Join(startPath, name)
+		node, err := NewNodeFrom(path)
+		if err != nil {
+			return nil, err
+		}
+		contents = append(contents, node)
+	}
+
+	return Directory{Name: name, Contents: contents}, nil
+}
+
+func readDirNames(dirname string) ([]string, error) {
+	f, err := os.Open(dirname)
+	defer f.Close()
+	if err != nil {
+		return nil, err
+	}
+	names, err := f.Readdirnames(-1) // -1 => read all
+	if err != nil {
+		return nil, err
+
+	}
+	sort.Strings(names)
+	return names, nil
 }

@@ -1,6 +1,7 @@
 package index
 
 import "testing"
+import "log"
 import "github.com/stretchr/testify/assert"
 
 func TestRenderIndexForEmptyFolder(t *testing.T) {
@@ -68,6 +69,36 @@ func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
 	expected += "<li>page</li>\n"
 	expected += "<li><h2>folder</h2></li>\n"
 	expected += "</ul>"
+
+	assert.Equal(t, expected, actual, "should be the same")
+}
+
+func TestNewNodeFromTestDir(t *testing.T) {
+	testDir := "./test/root"
+	actual, err := NewNodeFrom(testDir)
+	if err != nil {
+		log.Println(err)
+		t.FailNow()
+	}
+	expected := Directory{
+		Name: "root",
+		Contents: []Node{
+			Directory{
+				Name: "level1",
+				Contents: []Node{
+					Page{"level1_file.md"},
+					Page{"level1_other_file.md"},
+					Directory{
+						Name: "level2",
+						Contents: []Node{
+							Page{"level2_file.md"},
+						},
+					},
+				},
+			},
+			Page{"root_file.md"},
+		},
+	}
 
 	assert.Equal(t, expected, actual, "should be the same")
 }
