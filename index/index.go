@@ -54,6 +54,7 @@ func newNodeFrom(startPath string) (node, error) {
 	return directory{name: name, contents: contents}, nil
 }
 
+// readDirNames reads the contents of `dirname` and returns them sorted
 func readDirNames(dirname string) ([]string, error) {
 	f, err := os.Open(dirname)
 	defer f.Close()
