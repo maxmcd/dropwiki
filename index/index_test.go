@@ -13,13 +13,13 @@ func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
 	}
 
 	expected := "<ul>\n"
-	expected += "<li><h1>root</h1></li>\n"
-	expected += "<li>root page</li>\n"
-	expected += "<li><h2>level1</h2></li>\n"
-	expected += "<li>level1 other page</li>\n"
-	expected += "<li>level1 page</li>\n"
-	expected += "<li><h3>level2</h3></li>\n"
-	expected += "<li>level2 page</li>\n"
+	expected += "<li><h1>Root</h1></li>\n"
+	expected += "<li>Root Page</li>\n"
+	expected += "<li><h2>Level1</h2></li>\n"
+	expected += "<li>Level1 Other Page</li>\n"
+	expected += "<li>Level1 Page</li>\n"
+	expected += "<li><h3>Level2</h3></li>\n"
+	expected += "<li>Level2 Page</li>\n"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
@@ -89,22 +89,22 @@ func Test_newNodeFromTestDir(t *testing.T) {
 		t.FailNow()
 	}
 	expected := section{
-		title: "root",
+		title: "Root",
 		contents: []node{
 			section{
-				title: "level1",
+				title: "Level1",
 				contents: []node{
-					page{"level1 other page"},
-					page{"level1 page"},
+					page{"Level1 Other Page"},
+					page{"Level1 Page"},
 					section{
-						title: "level2",
+						title: "Level2",
 						contents: []node{
-							page{"level2 page"},
+							page{"Level2 Page"},
 						},
 					},
 				},
 			},
-			page{"root page"},
+			page{"Root Page"},
 		},
 	}
 

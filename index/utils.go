@@ -4,5 +4,5 @@ import "strings"
 
 func toTitle(filename string) string {
 	r := strings.NewReplacer("_", " ", ".md", "")
-	return r.Replace(filename)
+	return strings.Title(r.Replace(filename))
 }
