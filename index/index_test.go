@@ -26,19 +26,19 @@ func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
 }
 
 func Test_renderIndex(t *testing.T) {
-	f := directory{
-		name: "root",
+	f := section{
+		title: "root",
 		contents: []node{
-			page{name: "root_file.org"},
-			directory{
-				name: "level1",
+			page{title: "root_file.org"},
+			section{
+				title: "level1",
 				contents: []node{
-					page{name: "level1_file.md"},
-					directory{
-						name: "level2",
+					page{title: "level1_file.md"},
+					section{
+						title: "level2",
 						contents: []node{
-							page{name: "level2_file.md"},
-							page{name: "level2_other_file.md"},
+							page{title: "level2_file.md"},
+							page{title: "level2_other_file.md"},
 						},
 					},
 				},
@@ -62,11 +62,11 @@ func Test_renderIndex(t *testing.T) {
 }
 
 func Test_renderIndexRendersPagesBeforeFolders(t *testing.T) {
-	f := directory{
-		name: "foo",
+	f := section{
+		title: "foo",
 		contents: []node{
-			directory{name: "folder"},
-			page{name: "page"},
+			section{title: "folder"},
+			page{title: "page"},
 		},
 	}
 
@@ -88,16 +88,16 @@ func Test_newNodeFromTestDir(t *testing.T) {
 		log.Println(err)
 		t.FailNow()
 	}
-	expected := directory{
-		name: "root",
+	expected := section{
+		title: "root",
 		contents: []node{
-			directory{
-				name: "level1",
+			section{
+				title: "level1",
 				contents: []node{
 					page{"level1_file.md"},
 					page{"level1_other_file.md"},
-					directory{
-						name: "level2",
+					section{
+						title: "level2",
 						contents: []node{
 							page{"level2_file.md"},
 						},

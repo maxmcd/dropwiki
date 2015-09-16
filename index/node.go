@@ -13,8 +13,8 @@ type node interface {
 type nodeSortingWeight int
 
 const (
-	pageSortingWeight nodeSortingWeight = iota // pages come before directories
-	directorySortingWeight
+	pageSortingWeight nodeSortingWeight = iota // pages come before sections
+	sectionSortingWeight
 )
 
 // byWeight implements the sort.Interface for []node based

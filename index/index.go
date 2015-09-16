@@ -20,7 +20,7 @@ func RenderIndex(path string) (string, error) {
 	return renderedIndex, nil
 }
 
-// renderIndex generates an HTML index from the intermediate node
+// renderIndex generates an HTML index from the intermediate
 // representation `start`
 func renderIndex(start node) string {
 	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
@@ -36,8 +36,7 @@ func newNodeFrom(startPath string) (node, error) {
 		return nil, err
 	}
 	if !info.IsDir() {
-		// TODO: name needs to be properly formatted/capitalized
-		return page{name: name}, nil
+		return page{title: name}, nil
 	}
 
 	contentsNames, _ := readDirContentsNames(startPath)
@@ -51,7 +50,7 @@ func newNodeFrom(startPath string) (node, error) {
 		contents = append(contents, node)
 	}
 
-	return directory{name: name, contents: contents}, nil
+	return section{title: name, contents: contents}, nil
 }
 
 // readDirContentsNames reads the contents of `dirname` and returns their names, soted

@@ -3,7 +3,7 @@ package index
 import "fmt"
 
 type page struct {
-	name string
+	title string
 }
 
 func (p page) sortingWeight() nodeSortingWeight {
@@ -11,7 +11,7 @@ func (p page) sortingWeight() nodeSortingWeight {
 }
 
 func (p page) value() string {
-	return p.name
+	return p.title
 }
 
 func (p page) children() []node {
@@ -20,5 +20,5 @@ func (p page) children() []node {
 }
 
 func (p page) renderIndex(d int) string {
-	return fmt.Sprintf("<li>%s</li>\n", p.name)
+	return fmt.Sprintf("<li>%s</li>\n", p.title)
 }
