@@ -4,7 +4,7 @@ import "testing"
 import "github.com/stretchr/testify/assert"
 
 func TestRenderIndexForEmptyFolder(t *testing.T) {
-	f := Folder{
+	f := Directory{
 		Name:     "foo",
 		Contents: []Node{},
 	}
@@ -17,19 +17,19 @@ func TestRenderIndexForEmptyFolder(t *testing.T) {
 }
 
 func TestRenderIndex(t *testing.T) {
-	f := Folder{
+	f := Directory{
 		Name: "root",
 		Contents: []Node{
-			Page{Title: "root_file.org"},
-			Folder{
+			Page{Name: "root_file.org"},
+			Directory{
 				Name: "level1",
 				Contents: []Node{
-					Page{Title: "level1_file.md"},
-					Folder{
+					Page{Name: "level1_file.md"},
+					Directory{
 						Name: "level2",
 						Contents: []Node{
-							Page{Title: "level2_file.md"},
-							Page{Title: "level2_other_file.md"},
+							Page{Name: "level2_file.md"},
+							Page{Name: "level2_other_file.md"},
 						},
 					},
 				},
@@ -53,11 +53,11 @@ func TestRenderIndex(t *testing.T) {
 }
 
 func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
-	f := Folder{
+	f := Directory{
 		Name: "foo",
 		Contents: []Node{
-			Folder{Name: "folder"},
-			Page{Title: "page"},
+			Directory{Name: "folder"},
+			Page{Name: "page"},
 		},
 	}
 

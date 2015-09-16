@@ -10,8 +10,8 @@ import (
 type NodeSortingWeight int
 
 const (
-	PageSortingWeight NodeSortingWeight = iota // Pages come before Folders
-	FolderSortingWeight
+	PageSortingWeight NodeSortingWeight = iota // Pages come before Directories
+	DirectorySortingWeight
 )
 
 type Node interface {
@@ -30,8 +30,7 @@ func (ns ByWeight) Swap(i, j int)      { ns[i], ns[j] = ns[j], ns[i] }
 func (ns ByWeight) Less(i, j int) bool { return ns[i].SortingWeight() < ns[j].SortingWeight() }
 
 type Page struct {
-	Title string
-	Body  string
+	Name string
 }
 
 func (p Page) SortingWeight() NodeSortingWeight {
@@ -39,7 +38,7 @@ func (p Page) SortingWeight() NodeSortingWeight {
 }
 
 func (p Page) Value() string {
-	return p.Title
+	return p.Name
 }
 
 func (p Page) Children() []Node {
@@ -48,28 +47,28 @@ func (p Page) Children() []Node {
 }
 
 func (p Page) renderIndex(d int) string {
-	return fmt.Sprintf("<li>%s</li>\n", p.Title)
+	return fmt.Sprintf("<li>%s</li>\n", p.Name)
 }
 
-type Folder struct {
+type Directory struct {
 	Name     string
 	Contents []Node
 }
 
-func (f Folder) SortingWeight() NodeSortingWeight {
-	return FolderSortingWeight
+func (f Directory) SortingWeight() NodeSortingWeight {
+	return DirectorySortingWeight
 }
 
-func (f Folder) Value() string {
+func (f Directory) Value() string {
 	return f.Name
 }
 
-func (f Folder) Children() []Node {
+func (f Directory) Children() []Node {
 	sort.Sort(ByWeight(f.Contents))
 	return f.Contents
 }
 
-func (f Folder) renderIndex(startingDepth int) string {
+func (f Directory) renderIndex(startingDepth int) string {
 	renderedChildren := ""
 	for _, c := range f.Children() {
 		renderedChildren += c.renderIndex(startingDepth + 1)
