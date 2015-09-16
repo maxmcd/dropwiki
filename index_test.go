@@ -5,12 +5,12 @@ import "log"
 import "github.com/stretchr/testify/assert"
 
 func TestRenderIndexForEmptyFolder(t *testing.T) {
-	f := Directory{
-		Name:     "foo",
-		Contents: []Node{},
+	f := directory{
+		name:     "foo",
+		contents: []node{},
 	}
 
-	actual := RenderIndex(f)
+	actual := renderIndex(f)
 
 	expected := "<ul>\n<li><h1>foo</h1></li>\n</ul>"
 
@@ -18,19 +18,19 @@ func TestRenderIndexForEmptyFolder(t *testing.T) {
 }
 
 func TestRenderIndex(t *testing.T) {
-	f := Directory{
-		Name: "root",
-		Contents: []Node{
-			Page{Name: "root_file.org"},
-			Directory{
-				Name: "level1",
-				Contents: []Node{
-					Page{Name: "level1_file.md"},
-					Directory{
-						Name: "level2",
-						Contents: []Node{
-							Page{Name: "level2_file.md"},
-							Page{Name: "level2_other_file.md"},
+	f := directory{
+		name: "root",
+		contents: []node{
+			page{name: "root_file.org"},
+			directory{
+				name: "level1",
+				contents: []node{
+					page{name: "level1_file.md"},
+					directory{
+						name: "level2",
+						contents: []node{
+							page{name: "level2_file.md"},
+							page{name: "level2_other_file.md"},
 						},
 					},
 				},
@@ -38,7 +38,7 @@ func TestRenderIndex(t *testing.T) {
 		},
 	}
 
-	actual := RenderIndex(f)
+	actual := renderIndex(f)
 
 	expected := "<ul>\n"
 	expected += "<li><h1>root</h1></li>\n"
@@ -54,15 +54,15 @@ func TestRenderIndex(t *testing.T) {
 }
 
 func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
-	f := Directory{
-		Name: "foo",
-		Contents: []Node{
-			Directory{Name: "folder"},
-			Page{Name: "page"},
+	f := directory{
+		name: "foo",
+		contents: []node{
+			directory{name: "folder"},
+			page{name: "page"},
 		},
 	}
 
-	actual := RenderIndex(f)
+	actual := renderIndex(f)
 
 	expected := "<ul>\n"
 	expected += "<li><h1>foo</h1></li>\n"
@@ -75,28 +75,28 @@ func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
 
 func TestNewNodeFromTestDir(t *testing.T) {
 	testDir := "./test_fixtures/root"
-	actual, err := NewNodeFrom(testDir)
+	actual, err := newNodeFrom(testDir)
 	if err != nil {
 		log.Println(err)
 		t.FailNow()
 	}
-	expected := Directory{
-		Name: "root",
-		Contents: []Node{
-			Directory{
-				Name: "level1",
-				Contents: []Node{
-					Page{"level1_file.md"},
-					Page{"level1_other_file.md"},
-					Directory{
-						Name: "level2",
-						Contents: []Node{
-							Page{"level2_file.md"},
+	expected := directory{
+		name: "root",
+		contents: []node{
+			directory{
+				name: "level1",
+				contents: []node{
+					page{"level1_file.md"},
+					page{"level1_other_file.md"},
+					directory{
+						name: "level2",
+						contents: []node{
+							page{"level2_file.md"},
 						},
 					},
 				},
 			},
-			Page{"root_file.md"},
+			page{"root_file.md"},
 		},
 	}
 

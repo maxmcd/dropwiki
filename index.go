@@ -7,85 +7,89 @@ import (
 	"sort"
 )
 
-// NodeSortingWeight determines the sorting weights for elements
+// nodeSortingWeight determines the sorting weights for elements
 // in a []Node slice
-type NodeSortingWeight int
+type nodeSortingWeight int
 
 const (
-	PageSortingWeight NodeSortingWeight = iota // Pages come before Directories
-	DirectorySortingWeight
+	pageSortingWeight nodeSortingWeight = iota // pages come before directories
+	directorySortingWeight
 )
 
-type Node interface {
-	SortingWeight() NodeSortingWeight
-	Value() string
-	Children() []Node
+// node is the intermediate representation of a directory/file node
+type node interface {
+	sortingWeight() nodeSortingWeight
+	value() string
+	children() []node
 	renderIndex(int) string
 }
 
-// ByWeight implements the sort.Interface for []Node based
-// on the SortingWeight of the elements
-type ByWeight []Node
+// byWeight implements the sort.Interface for []node based
+// on the sortingWeight of the elements
+type byWeight []node
 
-func (ns ByWeight) Len() int           { return len(ns) }
-func (ns ByWeight) Swap(i, j int)      { ns[i], ns[j] = ns[j], ns[i] }
-func (ns ByWeight) Less(i, j int) bool { return ns[i].SortingWeight() < ns[j].SortingWeight() }
+func (ns byWeight) Len() int           { return len(ns) }
+func (ns byWeight) Swap(i, j int)      { ns[i], ns[j] = ns[j], ns[i] }
+func (ns byWeight) Less(i, j int) bool { return ns[i].sortingWeight() < ns[j].sortingWeight() }
 
-type Page struct {
-	Name string
+type page struct {
+	name string
 }
 
-func (p Page) SortingWeight() NodeSortingWeight {
-	return PageSortingWeight
+func (p page) sortingWeight() nodeSortingWeight {
+	return pageSortingWeight
 }
 
-func (p Page) Value() string {
-	return p.Name
+func (p page) value() string {
+	return p.name
 }
 
-func (p Page) Children() []Node {
+func (p page) children() []node {
 	// a Page has no Children
-	return []Node{}
+	return []node{}
 }
 
-func (p Page) renderIndex(d int) string {
-	return fmt.Sprintf("<li>%s</li>\n", p.Name)
+func (p page) renderIndex(d int) string {
+	return fmt.Sprintf("<li>%s</li>\n", p.name)
 }
 
-type Directory struct {
-	Name     string
-	Contents []Node
+type directory struct {
+	name     string
+	contents []node
 }
 
-func (f Directory) SortingWeight() NodeSortingWeight {
-	return DirectorySortingWeight
+func (f directory) sortingWeight() nodeSortingWeight {
+	return directorySortingWeight
 }
 
-func (f Directory) Value() string {
-	return f.Name
+func (f directory) value() string {
+	return f.name
 }
 
-func (f Directory) Children() []Node {
-	sort.Sort(ByWeight(f.Contents))
-	return f.Contents
+func (f directory) children() []node {
+	sort.Sort(byWeight(f.contents))
+	return f.contents
 }
 
-func (f Directory) renderIndex(startingDepth int) string {
+func (f directory) renderIndex(startingDepth int) string {
 	renderedChildren := ""
-	for _, c := range f.Children() {
+	for _, c := range f.children() {
 		renderedChildren += c.renderIndex(startingDepth + 1)
 	}
 
-	renderedTitle := fmt.Sprintf("<li><h%d>%s</h%d></li>\n", startingDepth, f.Name, startingDepth)
+	renderedTitle := fmt.Sprintf("<li><h%d>%s</h%d></li>\n", startingDepth, f.name, startingDepth)
 	return renderedTitle + renderedChildren
 }
 
-func RenderIndex(start Node) string {
+// renderIndex generates an HTML index starting from the intermediate node
+// representation `start`
+func renderIndex(start node) string {
 	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
 }
 
-// recursively make a Node from a path
-func NewNodeFrom(startPath string) (Node, error) {
+// newNodeFrom creates an intermediate representation of the
+// direcory tree starting from `startPath`
+func newNodeFrom(startPath string) (node, error) {
 	name := filepath.Base(startPath)
 
 	info, err := os.Lstat(startPath)
@@ -94,21 +98,21 @@ func NewNodeFrom(startPath string) (Node, error) {
 	}
 	if !info.IsDir() {
 		// TODO: name needs to be properly formatted/capitalized
-		return Page{Name: name}, nil
+		return page{name: name}, nil
 	}
 
 	contentsNames, _ := readDirNames(startPath)
-	contents := []Node{}
+	contents := []node{}
 	for _, name := range contentsNames {
 		path := filepath.Join(startPath, name)
-		node, err := NewNodeFrom(path)
+		node, err := newNodeFrom(path)
 		if err != nil {
 			return nil, err
 		}
 		contents = append(contents, node)
 	}
 
-	return Directory{Name: name, Contents: contents}, nil
+	return directory{name: name, contents: contents}, nil
 }
 
 func readDirNames(dirname string) ([]string, error) {
