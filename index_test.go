@@ -4,20 +4,28 @@ import "testing"
 import "log"
 import "github.com/stretchr/testify/assert"
 
-func TestRenderIndexForEmptyFolder(t *testing.T) {
-	f := directory{
-		name:     "foo",
-		contents: []node{},
+func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
+	testDropwikiPath := "./test_fixtures/root"
+	actual, err := RenderIndex(testDropwikiPath)
+	if err != nil {
+		log.Println(err)
+		t.FailNow()
 	}
 
-	actual := renderIndex(f)
-
-	expected := "<ul>\n<li><h1>foo</h1></li>\n</ul>"
+	expected := "<ul>\n"
+	expected += "<li><h1>root</h1></li>\n"
+	expected += "<li>root_file.md</li>\n"
+	expected += "<li><h2>level1</h2></li>\n"
+	expected += "<li>level1_file.md</li>\n"
+	expected += "<li>level1_other_file.md</li>\n"
+	expected += "<li><h3>level2</h3></li>\n"
+	expected += "<li>level2_file.md</li>\n"
+	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
 }
 
-func TestRenderIndex(t *testing.T) {
+func Test_renderIndex(t *testing.T) {
 	f := directory{
 		name: "root",
 		contents: []node{
@@ -53,7 +61,7 @@ func TestRenderIndex(t *testing.T) {
 	assert.Equal(t, expected, actual, "should be the same")
 }
 
-func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
+func Test_renderIndexRendersPagesBeforeFolders(t *testing.T) {
 	f := directory{
 		name: "foo",
 		contents: []node{
@@ -73,7 +81,7 @@ func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
 	assert.Equal(t, expected, actual, "should be the same")
 }
 
-func TestNewNodeFromTestDir(t *testing.T) {
+func Test_newNodeFromTestDir(t *testing.T) {
 	testDir := "./test_fixtures/root"
 	actual, err := newNodeFrom(testDir)
 	if err != nil {
@@ -99,27 +107,6 @@ func TestNewNodeFromTestDir(t *testing.T) {
 			page{"root_file.md"},
 		},
 	}
-
-	assert.Equal(t, expected, actual, "should be the same")
-}
-
-func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
-	testDropwikiPath := "./test_fixtures/root"
-	actual, err := RenderIndex(testDropwikiPath)
-	if err != nil {
-		log.Println(err)
-		t.FailNow()
-	}
-
-	expected := "<ul>\n"
-	expected += "<li><h1>root</h1></li>\n"
-	expected += "<li>root_file.md</li>\n"
-	expected += "<li><h2>level1</h2></li>\n"
-	expected += "<li>level1_file.md</li>\n"
-	expected += "<li>level1_other_file.md</li>\n"
-	expected += "<li><h3>level2</h3></li>\n"
-	expected += "<li>level2_file.md</li>\n"
-	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
 }
