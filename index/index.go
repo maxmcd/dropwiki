@@ -27,7 +27,7 @@ func renderIndex(start node) string {
 }
 
 // newNodeFrom creates an intermediate representation of the
-// directory tree at `startPath`
+// index from the directory tree at `startPath`
 func newNodeFrom(startPath string) (node, error) {
 	name := toTitle(filepath.Base(startPath))
 
