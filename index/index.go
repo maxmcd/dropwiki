@@ -1,7 +1,6 @@
 package index
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"sort"
@@ -23,7 +22,7 @@ func RenderIndex(path string) (string, error) {
 // renderIndex generates an HTML index from the intermediate
 // representation `start`
 func renderIndex(start node) string {
-	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
+	return wrapWithTag(start.renderIndex(1), "ul")
 }
 
 // newNodeFrom creates an intermediate representation of the

@@ -1,7 +1,7 @@
 package index
 
-import "fmt"
 import "sort"
+import "strconv"
 
 type section struct {
 	title    string
@@ -27,6 +27,7 @@ func (s section) renderIndex(startingDepth int) string {
 		renderedChildren += c.renderIndex(startingDepth + 1)
 	}
 
-	renderedTitle := fmt.Sprintf("<li><h%d>%s</h%d></li>\n", startingDepth, s.title, startingDepth)
+	headerTagName := "h" + strconv.Itoa(startingDepth)
+	renderedTitle := wrapWithTag(wrapWithTag(s.title, headerTagName), "li")
 	return renderedTitle + renderedChildren
 }

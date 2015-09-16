@@ -8,3 +8,9 @@ func Test_toTitle(t *testing.T) {
 	expected := "My Page"
 	assert.Equal(t, expected, actual, "")
 }
+
+func Test_wrapWithTag(t *testing.T) {
+	actual := wrapWithTag("foo", "div")
+	expected := "<div>foo</div>"
+	assert.Equal(t, expected, actual, "")
+}

@@ -12,14 +12,14 @@ func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
 		t.FailNow()
 	}
 
-	expected := "<ul>\n"
-	expected += "<li><h1>Root</h1></li>\n"
-	expected += "<li>Root Page</li>\n"
-	expected += "<li><h2>Level1</h2></li>\n"
-	expected += "<li>Level1 Other Page</li>\n"
-	expected += "<li>Level1 Page</li>\n"
-	expected += "<li><h3>Level2</h3></li>\n"
-	expected += "<li>Level2 Page</li>\n"
+	expected := "<ul>"
+	expected += "<li><h1>Root</h1></li>"
+	expected += "<li>Root Page</li>"
+	expected += "<li><h2>Level1</h2></li>"
+	expected += "<li>Level1 Other Page</li>"
+	expected += "<li>Level1 Page</li>"
+	expected += "<li><h3>Level2</h3></li>"
+	expected += "<li>Level2 Page</li>"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
@@ -48,14 +48,14 @@ func Test_renderIndex(t *testing.T) {
 
 	actual := renderIndex(f)
 
-	expected := "<ul>\n"
-	expected += "<li><h1>root</h1></li>\n"
-	expected += "<li>root page.org</li>\n"
-	expected += "<li><h2>level1</h2></li>\n"
-	expected += "<li>level1 page</li>\n"
-	expected += "<li><h3>level2</h3></li>\n"
-	expected += "<li>level2 page</li>\n"
-	expected += "<li>level2 other page</li>\n"
+	expected := "<ul>"
+	expected += "<li><h1>root</h1></li>"
+	expected += "<li>root page.org</li>"
+	expected += "<li><h2>level1</h2></li>"
+	expected += "<li>level1 page</li>"
+	expected += "<li><h3>level2</h3></li>"
+	expected += "<li>level2 page</li>"
+	expected += "<li>level2 other page</li>"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
@@ -72,10 +72,10 @@ func Test_renderIndexRendersPagesBeforeSections(t *testing.T) {
 
 	actual := renderIndex(f)
 
-	expected := "<ul>\n"
-	expected += "<li><h1>foo</h1></li>\n"
-	expected += "<li>page</li>\n"
-	expected += "<li><h2>folder</h2></li>\n"
+	expected := "<ul>"
+	expected += "<li><h1>foo</h1></li>"
+	expected += "<li>page</li>"
+	expected += "<li><h2>folder</h2></li>"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")

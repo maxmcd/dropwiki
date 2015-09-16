@@ -1,7 +1,5 @@
 package index
 
-import "fmt"
-
 type page struct {
 	title string
 }
@@ -20,5 +18,5 @@ func (p page) children() []node {
 }
 
 func (p page) renderIndex(d int) string {
-	return fmt.Sprintf("<li>%s</li>\n", p.title)
+	return wrapWithTag(p.title, "li")
 }
