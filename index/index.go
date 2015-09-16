@@ -40,7 +40,7 @@ func newNodeFrom(startPath string) (node, error) {
 		return page{name: name}, nil
 	}
 
-	contentsNames, _ := readDirNames(startPath)
+	contentsNames, _ := readDirContentsNames(startPath)
 	contents := []node{}
 	for _, name := range contentsNames {
 		path := filepath.Join(startPath, name)
@@ -54,8 +54,8 @@ func newNodeFrom(startPath string) (node, error) {
 	return directory{name: name, contents: contents}, nil
 }
 
-// readDirNames reads the contents of `dirname` and returns them sorted
-func readDirNames(dirname string) ([]string, error) {
+// readDirContentsNames reads the contents of `dirname` and returns their names, soted
+func readDirContentsNames(dirname string) ([]string, error) {
 	f, err := os.Open(dirname)
 	defer f.Close()
 	if err != nil {
