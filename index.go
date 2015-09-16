@@ -7,8 +7,8 @@ import (
 	"sort"
 )
 
-// nodeSortingWeight determines the sorting weights for elements
-// in a []Node slice
+// nodeSortingWeight determines the sorting order for elements
+// in a []node slice
 type nodeSortingWeight int
 
 const (
@@ -81,12 +81,6 @@ func (f directory) renderIndex(startingDepth int) string {
 	return renderedTitle + renderedChildren
 }
 
-// renderIndex generates an HTML index starting from the intermediate node
-// representation `start`
-func renderIndex(start node) string {
-	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
-}
-
 // newNodeFrom creates an intermediate representation of the
 // direcory tree starting from `startPath`
 func newNodeFrom(startPath string) (node, error) {
@@ -113,6 +107,25 @@ func newNodeFrom(startPath string) (node, error) {
 	}
 
 	return directory{name: name, contents: contents}, nil
+}
+
+// renderIndex generates an HTML index from the intermediate node
+// representation `start`
+func renderIndex(start node) string {
+	return fmt.Sprintf("<ul>\n%s</ul>", start.renderIndex(1))
+}
+
+// RenderIndex generates an HTML index from the directory structure
+// of `path`
+func RenderIndex(path string) (string, error) {
+	nodeRepresentation, err := newNodeFrom(path)
+	if err != nil {
+		return "", err
+	}
+
+	renderedIndex := renderIndex(nodeRepresentation)
+
+	return renderedIndex, nil
 }
 
 func readDirNames(dirname string) ([]string, error) {

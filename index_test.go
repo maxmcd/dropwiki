@@ -102,3 +102,24 @@ func TestNewNodeFromTestDir(t *testing.T) {
 
 	assert.Equal(t, expected, actual, "should be the same")
 }
+
+func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
+	testDropwikiPath := "./test_fixtures/root"
+	actual, err := RenderIndex(testDropwikiPath)
+	if err != nil {
+		log.Println(err)
+		t.FailNow()
+	}
+
+	expected := "<ul>\n"
+	expected += "<li><h1>root</h1></li>\n"
+	expected += "<li>root_file.md</li>\n"
+	expected += "<li><h2>level1</h2></li>\n"
+	expected += "<li>level1_file.md</li>\n"
+	expected += "<li>level1_other_file.md</li>\n"
+	expected += "<li><h3>level2</h3></li>\n"
+	expected += "<li>level2_file.md</li>\n"
+	expected += "</ul>"
+
+	assert.Equal(t, expected, actual, "should be the same")
+}
