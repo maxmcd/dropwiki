@@ -29,7 +29,7 @@ func renderIndex(start node) string {
 // newNodeFrom creates an intermediate representation of the
 // directory tree at `startPath`
 func newNodeFrom(startPath string) (node, error) {
-	name := filepath.Base(startPath)
+	name := toTitle(filepath.Base(startPath))
 
 	info, err := os.Lstat(startPath)
 	if err != nil {

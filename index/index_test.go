@@ -14,12 +14,12 @@ func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
 
 	expected := "<ul>\n"
 	expected += "<li><h1>root</h1></li>\n"
-	expected += "<li>root_page.md</li>\n"
+	expected += "<li>root page</li>\n"
 	expected += "<li><h2>level1</h2></li>\n"
-	expected += "<li>level1_other_page.md</li>\n"
-	expected += "<li>level1_page.md</li>\n"
+	expected += "<li>level1 other page</li>\n"
+	expected += "<li>level1 page</li>\n"
 	expected += "<li><h3>level2</h3></li>\n"
-	expected += "<li>level2_page.md</li>\n"
+	expected += "<li>level2 page</li>\n"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
@@ -29,16 +29,16 @@ func Test_renderIndex(t *testing.T) {
 	f := section{
 		title: "root",
 		contents: []node{
-			page{title: "root_page.org"},
+			page{title: "root page.org"},
 			section{
 				title: "level1",
 				contents: []node{
-					page{title: "level1_page.md"},
+					page{title: "level1 page"},
 					section{
 						title: "level2",
 						contents: []node{
-							page{title: "level2_page.md"},
-							page{title: "level2_other_page.md"},
+							page{title: "level2 page"},
+							page{title: "level2 other page"},
 						},
 					},
 				},
@@ -50,12 +50,12 @@ func Test_renderIndex(t *testing.T) {
 
 	expected := "<ul>\n"
 	expected += "<li><h1>root</h1></li>\n"
-	expected += "<li>root_page.org</li>\n"
+	expected += "<li>root page.org</li>\n"
 	expected += "<li><h2>level1</h2></li>\n"
-	expected += "<li>level1_page.md</li>\n"
+	expected += "<li>level1 page</li>\n"
 	expected += "<li><h3>level2</h3></li>\n"
-	expected += "<li>level2_page.md</li>\n"
-	expected += "<li>level2_other_page.md</li>\n"
+	expected += "<li>level2 page</li>\n"
+	expected += "<li>level2 other page</li>\n"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
@@ -94,17 +94,17 @@ func Test_newNodeFromTestDir(t *testing.T) {
 			section{
 				title: "level1",
 				contents: []node{
-					page{"level1_other_page.md"},
-					page{"level1_page.md"},
+					page{"level1 other page"},
+					page{"level1 page"},
 					section{
 						title: "level2",
 						contents: []node{
-							page{"level2_page.md"},
+							page{"level2 page"},
 						},
 					},
 				},
 			},
-			page{"root_page.md"},
+			page{"root page"},
 		},
 	}
 
