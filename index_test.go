@@ -74,7 +74,7 @@ func TestRenderIndexRendersPagesBeforeFolders(t *testing.T) {
 }
 
 func TestNewNodeFromTestDir(t *testing.T) {
-	testDir := "./test/root"
+	testDir := "./test_fixtures/root"
 	actual, err := NewNodeFrom(testDir)
 	if err != nil {
 		log.Println(err)
