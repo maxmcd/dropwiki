@@ -29,6 +29,8 @@ func (s section) renderIndex(startingDepth int) string {
 	}
 
 	headerTagName := "h" + strconv.Itoa(startingDepth)
-	renderedTitle := wrapWithTag(wrapWithTag(s.title, headerTagName), "li")
+	header := wrapWithTag(s.title, headerTagName)
+	linkedHeader := wrapWithAnchorTag(header, s.url)
+	renderedTitle := wrapWithTag(linkedHeader, "li")
 	return renderedTitle + renderedChildren
 }

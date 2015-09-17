@@ -5,21 +5,21 @@ import "log"
 import "github.com/stretchr/testify/assert"
 
 func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
-	testDropwikiPath := "./test_fixtures/root"
-	actual, err := RenderIndex(testDropwikiPath)
+	testPath := "test_fixtures/root"
+	actual, err := RenderIndex(testPath)
 	if err != nil {
 		log.Println(err)
 		t.FailNow()
 	}
 
 	expected := "<ul>"
-	expected += "<li><h1>Root</h1></li>"
-	expected += "<li>Root Page</li>"
-	expected += "<li><h2>Level1</h2></li>"
-	expected += "<li>Level1 Other Page</li>"
-	expected += "<li>Level1 Page</li>"
-	expected += "<li><h3>Level2</h3></li>"
-	expected += "<li>Level2 Page</li>"
+	expected += "<li><a href='test_fixtures/root'><h1>Root</h1></a></li>"
+	expected += "<li><a href='test_fixtures/root/root_page.md'>Root Page</a></li>"
+	expected += "<li><a href='test_fixtures/root/level1'><h2>Level1</h2></a></li>"
+	expected += "<li><a href='test_fixtures/root/level1/level1_other_page.md'>Level1 Other Page</a></li>"
+	expected += "<li><a href='test_fixtures/root/level1/level1_page.md'>Level1 Page</a></li>"
+	expected += "<li><a href='test_fixtures/root/level1/level2'><h3>Level2</h3></a></li>"
+	expected += "<li><a href='test_fixtures/root/level1/level2/level2_page.md'>Level2 Page</a></li>"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
@@ -28,17 +28,20 @@ func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
 func Test_renderIndex(t *testing.T) {
 	f := section{
 		title: "root",
+		url:   "root_URL",
 		contents: []node{
-			page{title: "root page.org"},
+			page{title: "root page", url: "root_page_URL"},
 			section{
 				title: "level1",
+				url:   "level1_URL",
 				contents: []node{
-					page{title: "level1 page"},
+					page{title: "level1 page", url: "level1_page_URL"},
 					section{
 						title: "level2",
+						url:   "level2_URL",
 						contents: []node{
-							page{title: "level2 page"},
-							page{title: "level2 other page"},
+							page{title: "level2 page", url: "level2_page_URL"},
+							page{title: "level2 other page", url: "level2_other_page_URL"},
 						},
 					},
 				},
@@ -49,13 +52,13 @@ func Test_renderIndex(t *testing.T) {
 	actual := renderIndex(f)
 
 	expected := "<ul>"
-	expected += "<li><h1>root</h1></li>"
-	expected += "<li>root page.org</li>"
-	expected += "<li><h2>level1</h2></li>"
-	expected += "<li>level1 page</li>"
-	expected += "<li><h3>level2</h3></li>"
-	expected += "<li>level2 page</li>"
-	expected += "<li>level2 other page</li>"
+	expected += "<li><a href='root_URL'><h1>root</h1></a></li>"
+	expected += "<li><a href='root_page_URL'>root page</a></li>"
+	expected += "<li><a href='level1_URL'><h2>level1</h2></a></li>"
+	expected += "<li><a href='level1_page_URL'>level1 page</a></li>"
+	expected += "<li><a href='level2_URL'><h3>level2</h3></a></li>"
+	expected += "<li><a href='level2_page_URL'>level2 page</a></li>"
+	expected += "<li><a href='level2_other_page_URL'>level2 other page</a></li>"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")
@@ -64,18 +67,19 @@ func Test_renderIndex(t *testing.T) {
 func Test_renderIndexRendersPagesBeforeSections(t *testing.T) {
 	f := section{
 		title: "foo",
+		url:   "URL",
 		contents: []node{
-			section{title: "folder"},
-			page{title: "page"},
+			section{title: "folder", url: "URL"},
+			page{title: "page", url: "URL"},
 		},
 	}
 
 	actual := renderIndex(f)
 
 	expected := "<ul>"
-	expected += "<li><h1>foo</h1></li>"
-	expected += "<li>page</li>"
-	expected += "<li><h2>folder</h2></li>"
+	expected += "<li><a href='URL'><h1>foo</h1></a></li>"
+	expected += "<li><a href='URL'>page</a></li>"
+	expected += "<li><a href='URL'><h2>folder</h2></a></li>"
 	expected += "</ul>"
 
 	assert.Equal(t, expected, actual, "should be the same")

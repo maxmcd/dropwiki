@@ -14,3 +14,9 @@ func Test_wrapWithTag(t *testing.T) {
 	expected := "<div>foo</div>"
 	assert.Equal(t, expected, actual, "")
 }
+
+func Test_wrapWithAnchorTag(t *testing.T) {
+	actual := wrapWithAnchorTag("foo", "http://foo.com")
+	expected := "<a href='http://foo.com'>foo</a>"
+	assert.Equal(t, expected, actual, "")
+}

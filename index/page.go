@@ -19,5 +19,5 @@ func (p page) children() []node {
 }
 
 func (p page) renderIndex(d int) string {
-	return wrapWithTag(p.title, "li")
+	return wrapWithTag(wrapWithAnchorTag(p.title, p.url), "li")
 }
