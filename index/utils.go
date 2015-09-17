@@ -1,7 +1,9 @@
 package index
 
-import "strings"
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func toTitle(filename string) string {
 	r := strings.NewReplacer("_", " ", ".md", "")
@@ -13,6 +15,5 @@ func wrapWithTag(content, tagName string) string {
 }
 
 func wrapWithAnchorTag(content, href string) string {
-
 	return fmt.Sprintf("<a href='%s'>%s</a>", href, content)
 }

@@ -1,12 +1,15 @@
 package index
 
-import "testing"
-import "log"
-import "github.com/stretchr/testify/assert"
+import (
+	"log"
+	"testing"
 
-func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
+	"github.com/stretchr/testify/assert"
+)
+
+func Test_GenerateIndex_generates_an_HTML_index_from_a_path(t *testing.T) {
 	testPath := "test_fixtures/root"
-	actual, err := RenderIndex(testPath)
+	actual, err := GenerateIndex(testPath)
 	if err != nil {
 		log.Println(err)
 		t.FailNow()
@@ -22,11 +25,11 @@ func TestRenderIndexRendersIndexFromAPath(t *testing.T) {
 	expected += "<li><a href='test_fixtures/root/level1/level2/level2_page.md'>Level2 Page</a></li>"
 	expected += "</ul>"
 
-	assert.Equal(t, expected, actual, "should be the same")
+	assert.Equal(t, expected, actual, "")
 }
 
-func Test_renderIndex(t *testing.T) {
-	f := section{
+func Test_renderIndex_renders_an_HTML_index_from_an_indexTree(t *testing.T) {
+	indexTree := section{
 		title: "root",
 		url:   "root_URL",
 		contents: []node{
@@ -49,7 +52,7 @@ func Test_renderIndex(t *testing.T) {
 		},
 	}
 
-	actual := renderIndex(f)
+	actual := renderIndex(indexTree)
 
 	expected := "<ul>"
 	expected += "<li><a href='root_URL'><h1>root</h1></a></li>"
@@ -61,11 +64,11 @@ func Test_renderIndex(t *testing.T) {
 	expected += "<li><a href='level2_other_page_URL'>level2 other page</a></li>"
 	expected += "</ul>"
 
-	assert.Equal(t, expected, actual, "should be the same")
+	assert.Equal(t, expected, actual, "")
 }
 
-func Test_renderIndexRendersPagesBeforeSections(t *testing.T) {
-	f := section{
+func Test_renderIndex_puts_pages_before_sections(t *testing.T) {
+	indexTree := section{
 		title: "foo",
 		url:   "URL",
 		contents: []node{
@@ -74,7 +77,7 @@ func Test_renderIndexRendersPagesBeforeSections(t *testing.T) {
 		},
 	}
 
-	actual := renderIndex(f)
+	actual := renderIndex(indexTree)
 
 	expected := "<ul>"
 	expected += "<li><a href='URL'><h1>foo</h1></a></li>"
@@ -82,38 +85,5 @@ func Test_renderIndexRendersPagesBeforeSections(t *testing.T) {
 	expected += "<li><a href='URL'><h2>folder</h2></a></li>"
 	expected += "</ul>"
 
-	assert.Equal(t, expected, actual, "should be the same")
-}
-
-func Test_newNodeFromTestDir(t *testing.T) {
-	testDir := "test_fixtures/root"
-	actual, err := newNodeFrom(testDir)
-	if err != nil {
-		log.Println(err)
-		t.FailNow()
-	}
-	expected := section{
-		title: "Root",
-		url:   "test_fixtures/root",
-		contents: []node{
-			section{
-				title: "Level1",
-				url:   "test_fixtures/root/level1",
-				contents: []node{
-					page{title: "Level1 Other Page", url: "test_fixtures/root/level1/level1_other_page.md"},
-					page{title: "Level1 Page", url: "test_fixtures/root/level1/level1_page.md"},
-					section{
-						title: "Level2",
-						url:   "test_fixtures/root/level1/level2",
-						contents: []node{
-							page{title: "Level2 Page", url: "test_fixtures/root/level1/level2/level2_page.md"},
-						},
-					},
-				},
-			},
-			page{title: "Root Page", url: "test_fixtures/root/root_page.md"},
-		},
-	}
-
-	assert.Equal(t, expected, actual, "should be the same")
+	assert.Equal(t, expected, actual, "")
 }

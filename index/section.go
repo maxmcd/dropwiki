@@ -1,8 +1,11 @@
 package index
 
-import "sort"
-import "strconv"
+import (
+	"sort"
+	"strconv"
+)
 
+// section represents directory/section in an indexTree
 type section struct {
 	title    string
 	url      string

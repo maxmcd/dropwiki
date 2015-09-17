@@ -1,5 +1,6 @@
 package index
 
+// page represents a file/page in an indexTree
 type page struct {
 	title string
 	url   string

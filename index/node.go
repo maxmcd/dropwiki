@@ -1,6 +1,6 @@
 package index
 
-// node is the intermediate representation of a directory/file node
+// node is a node in an indexTree
 type node interface {
 	sortingWeight() nodeSortingWeight
 	value() string
