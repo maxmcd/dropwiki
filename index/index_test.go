@@ -82,7 +82,7 @@ func Test_renderIndexRendersPagesBeforeSections(t *testing.T) {
 }
 
 func Test_newNodeFromTestDir(t *testing.T) {
-	testDir := "./test_fixtures/root"
+	testDir := "test_fixtures/root"
 	actual, err := newNodeFrom(testDir)
 	if err != nil {
 		log.Println(err)
@@ -90,21 +90,24 @@ func Test_newNodeFromTestDir(t *testing.T) {
 	}
 	expected := section{
 		title: "Root",
+		url:   "test_fixtures/root",
 		contents: []node{
 			section{
 				title: "Level1",
+				url:   "test_fixtures/root/level1",
 				contents: []node{
-					page{"Level1 Other Page"},
-					page{"Level1 Page"},
+					page{title: "Level1 Other Page", url: "test_fixtures/root/level1/level1_other_page.md"},
+					page{title: "Level1 Page", url: "test_fixtures/root/level1/level1_page.md"},
 					section{
 						title: "Level2",
+						url:   "test_fixtures/root/level1/level2",
 						contents: []node{
-							page{"Level2 Page"},
+							page{title: "Level2 Page", url: "test_fixtures/root/level1/level2/level2_page.md"},
 						},
 					},
 				},
 			},
-			page{"Root Page"},
+			page{title: "Root Page", url: "test_fixtures/root/root_page.md"},
 		},
 	}
 

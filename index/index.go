@@ -35,7 +35,7 @@ func newNodeFrom(startPath string) (node, error) {
 		return nil, err
 	}
 	if !info.IsDir() {
-		return page{title: name}, nil
+		return page{title: name, url: startPath}, nil
 	}
 
 	contentsNames, _ := readDirContentsNames(startPath)
@@ -49,7 +49,7 @@ func newNodeFrom(startPath string) (node, error) {
 		contents = append(contents, node)
 	}
 
-	return section{title: name, contents: contents}, nil
+	return section{title: name, url: startPath, contents: contents}, nil
 }
 
 // readDirContentsNames reads the contents of `dirname` and returns their names, soted

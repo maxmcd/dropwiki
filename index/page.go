@@ -2,6 +2,7 @@ package index
 
 type page struct {
 	title string
+	url   string
 }
 
 func (p page) sortingWeight() nodeSortingWeight {

@@ -5,6 +5,7 @@ import "strconv"
 
 type section struct {
 	title    string
+	url      string
 	contents []node
 }
 
