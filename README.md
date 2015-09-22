@@ -12,6 +12,6 @@ $ dropwiki
 ```
 
 # TODO
-- [ ] generate the wiki index from the folder
+- [x] generate the wiki index from the folder
 - [ ] render pages at a URL corresponding to their relative path
 - [ ] full text search
