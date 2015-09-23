@@ -1,6 +1,6 @@
 package main
 
-import "github.com/vise890/dropwiki/serve"
+import "github.com/maxmcd/dropwiki/serve"
 
 func main() {
 	serve.ServeFiles()
