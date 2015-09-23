@@ -1,8 +1,11 @@
 package serve
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"text/template"
 )
 
@@ -34,7 +37,6 @@ func init() {
 }
 
 func ServeFiles() {
-
 	log.Fatal(http.ListenAndServe(":8001", http.HandlerFunc(handler)))
 }
 
@@ -44,28 +46,32 @@ type response struct {
 	Content string
 }
 
+func notFound(w http.ResponseWriter) {
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte("not found :("))
+	return
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 	location := findFile(path)
 	if location == "" {
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("not found :("))
+		notFound(w)
 		return
 	}
 
 	html, err := generateHtml(location)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+		notFound(w)
 		return
 	}
 
 	rsp := response{
 		Title:   "title",
 		Index:   "index",
-		Content: "html",
+		Content: string(html),
 	}
-	w.Header().Write("text/html")
+	w.Header().Add("Content-Type", "text/html; charset=UTF-8")
 	err = T.Execute(w, rsp)
 
 	if err != nil {
@@ -75,6 +81,23 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func findFile(path string) (location string) {
-	// ?
+func findFile(path string) string {
+	path = "." + path
+
+	if len(path) > 3 && path[len(path)-2:] == "md" {
+		return path
+	}
+
+	files, err := ioutil.ReadDir(path)
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, file := range files {
+		if file.IsDir() == false {
+			if strings.EqualFold(file.Name(), "readme.md") {
+				return path + "/readme.md"
+			}
+		}
+	}
+	return ""
 }
